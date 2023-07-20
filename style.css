@@ -153,10 +153,25 @@ body {
 /* end cardinal card */
 
 
+/* Styles for selected cards */
+.selected-card {
+    border: .6rem solid var(--gold-card-theme);
+    filter: grayscale(0);
+    filter: brightness(1);
+  }
+  
+  /* Styles for non-selected cards */
+  .unselected-card {
+    border: .6rem solid var(--gold-card-theme);
+    filter: grayscale(100%);
+    filter: brightness(0.5);
+  }
+  
+
 .selected-card:hover {
     position: relative;
     animation-name: selected-card;
-    animation-duration: .15s;
+    animation-duration: .1s;
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
 }
@@ -223,7 +238,7 @@ body {
 .mini-card {
     width: 32px;
     aspect-ratio: 3/5;
-    border: 1px solid black;
+    border: 3px solid black;
     border-radius: 5px;
     box-shadow: -4px 2px 1px black;
     position: relative;
@@ -298,9 +313,13 @@ body {
     }
 
     to {
+        --emphasis: rgb(0, 255, 55);
+        --emphasis: lightblue;
+        
         bottom: 1.5rem;
         right: 1.25rem;
-        box-shadow: -.2em -.2em 1em rgb(0, 255, 55);
-        --gold-card-theme: rgb(0, 255, 55);
+
+        box-shadow: -.2em -.2em 1em var(--emphasis);
+        --gold-card-theme: var(--emphasis);
     }
 }

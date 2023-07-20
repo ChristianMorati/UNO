@@ -1,42 +1,43 @@
-const distributeCards = () => {
-    list_of_cards = []
-    list_of_colors = ['color-blue', 'color-yellow', 'color-red', 'color-green']
+const criarCartas = () => {
+    const list_of_cards = [];
+    const list_of_colors = ['color-blue', 'color-yellow', 'color-red', 'color-green'];
 
-    cont = 0;
     for (let i = 0; i <= 9; i++) {
-        if (i == 0) {
+        if (i === 0) {
             for (const color of list_of_colors) {
-                card = `
-                <article class="card selected-card ${color}">
-                    <p class="left number">${i}</p>
-                    <p class="text-center inside">${i}</p>
-                    <p class="right number">${i}</p>
-                </article>`;
-                list_of_cards[cont] = card;
-                cont++;
-            }
-        } else {
-            for (let j = 0; j < 2; j++) {
-                for (const color of list_of_colors) {
-                    card = `
+                const card = `
                     <article class="card selected-card ${color}">
                         <p class="left number">${i}</p>
                         <p class="text-center inside">${i}</p>
                         <p class="right number">${i}</p>
                     </article>`;
-                    list_of_cards[cont] = card;
-                    cont++;
+                list_of_cards.push(card);
+            }
+        } else {
+            for (let j = 0; j < 2; j++) {
+                for (const color of list_of_colors) {
+                    const card = `
+                        <article class="card selected-card ${color}">
+                            <p class="left number">${i}</p>
+                            <p class="text-center inside">${i}</p>
+                            <p class="right number">${i}</p>
+                        </article>`;
+                    list_of_cards.push(card);
                 }
             }
         }
     }
+    return list_of_cards;
+};
 
 
-    let div = document.getElementById('player-cards');
+const renderCards = () => {
+    const list_of_cards = criarCartas();
+    const div = document.querySelector('#player-cards');
     for (const card of list_of_cards) {
         div.insertAdjacentHTML('beforeEnd', card);
     }
-}
+};
 
 
 const removerCartasDaMesa = () => {
@@ -76,26 +77,22 @@ const verificarSePodeJogar = () => {
     // suas cartas
     cards = document.querySelectorAll('#player-cards article.card');
 
+    
     cards.forEach((card) => {
         const cardNumber = card.firstElementChild.innerText || undefined;
+        
+        if (encontarCorDaCarta(card) == card_atual_color
+            || cardNumber == card_atual_number
+                || card.classList.contains('choose-card')) {
 
-        if (encontarCorDaCarta(card) == card_atual_color || cardNumber == card_atual_number || card.classList.contains('choose-card')) {
             card.addEventListener('click', discartarCarta);
-
-            // styles
-            card.classList.add('selected-card')
-            card.style.border = '.6rem solid var(--gold-card-theme)';
-            card.style.filter = 'grayscale(0)';
-            card.style.filter = 'brightness(1)';
-
-
-        } else {
-            // styles
-            card.classList.remove('selected-card')
-            card.style.border = '.6rem solid var(--gold-card-theme)';
-            card.style.filter = 'grayscale(100%)';
-            card.style.filter = 'brightness(0.5)';
-        }
+            
+            card.classList.add('selected-card');
+            card.classList.remove('unselected-card');
+          } else {
+            card.classList.remove('selected-card');
+            card.classList.add('unselected-card');
+          }
         card_atual.classList.remove('selected-card')
     });
 }
@@ -175,11 +172,12 @@ const escolherCorDoCard = () => {
 
 }
 
+
+// main program
 document.querySelectorAll('#escolher-cor > article.choose-card > div.choose-card-inside button').forEach((botoes_de_cor) => {
     botoes_de_cor.addEventListener('click', trocarCor);
 })
 
-// main program
-distributeCards()
+renderCards();
 findChooseCard()
 verificarSePodeJogar();
